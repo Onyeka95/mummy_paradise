@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Birthday Tribute Brochure - Mummy Paradise (66th)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<!--
+=====================================================================
+ HOW TO USE
+ 1. Put this file and your two photos in the SAME folder:
+      cover-photo.jpg   (her photo for the cover)
+      back-photo.jpg    (photo for the back cover; can be the same file)
+    Different file names? Change the src="..." in the COVER and BACK COVER sections below.
+ 2. Open this file in Google Chrome.
+ 3. Click "Download as PDF" (top right) or press Ctrl+P, then:
+      Destination: Save as PDF | Paper size: A5 | Margins: None | Background graphics: ON
+ 4. TO ADD A TRIBUTE: copy a block that starts with <article class="tribute"> and ends
+    with </article>, and paste it inside any "tribute page" (see TRIBUTE PAGES below).
+    If the page gets too full, that page turns RED on screen. Then either lower its
+    font size (--fs) or move a tribute to a new page.
+=====================================================================
+-->
+
+<style>
+  :root{
+    --emerald:#0B5D45; --forest:#07382B; --ivory:#FAF8F2;
+    --silver:#C9CCCB; --champagne:#D8C9A3; --muted:#4F6B60;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:#cfd6d2;font-family:'Montserrat',Arial,sans-serif;color:var(--forest);
+       -webkit-print-color-adjust:exact;print-color-adjust:exact}
+
+  /* ---------- page setup (A5 portrait) ---------- */
+  @page{size:148mm 210mm;margin:0}
+  .page{width:148mm;height:210mm;margin:18px auto;position:relative;overflow:hidden;
+        background:var(--ivory);box-shadow:0 4px 18px rgba(0,0,0,.25);break-after:page;page-break-after:always}
+  .page:last-child{break-after:auto;page-break-after:auto}
+  .page.overflowing{outline:3px solid #d00}
+  .toolbar{position:fixed;top:12px;right:12px;z-index:99;display:flex;gap:8px}
+  .toolbar button{background:var(--emerald);color:#fff;border:0;border-radius:6px;padding:10px 16px;
+        font:600 13px 'Montserrat',Arial;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+  #warn{display:none;position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:#d00;color:#fff;
+        padding:8px 14px;border-radius:6px;font:600 12px 'Montserrat',Arial;z-index:99}
+  @media print{
+    body{background:none}
+    .page{margin:0;box-shadow:none;outline:none!important}
+    .toolbar,#warn{display:none!important}
+  }
+
+  /* ---------- shared bits ---------- */
+  .dark{background:linear-gradient(180deg,var(--emerald),var(--forest));color:var(--ivory)}
+  .dark::before{content:"";position:absolute;inset:5mm;border:.35mm solid var(--silver);pointer-events:none}
+  .dark::after{content:"";position:absolute;inset:7mm;border:.15mm solid var(--silver);pointer-events:none}
+  .caps{font-size:6pt;letter-spacing:.28em;text-transform:uppercase}
+  .divider{display:flex;align-items:center;justify-content:center;gap:2.5mm;margin:3mm auto;width:34mm}
+  .divider::before,.divider::after{content:"";flex:1;height:.25mm;background:var(--silver)}
+  .divider i{width:1.6mm;height:1.6mm;background:var(--silver);transform:rotate(45deg);display:block}
+  .center-col{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+        text-align:center;padding:16mm 14mm}
+
+  /* ---------- cover ---------- */
+  .cover{display:flex;flex-direction:column;align-items:center;padding:13mm 12mm 0;text-align:center}
+  .cover .top{color:var(--champagne);line-height:1.9;margin-top:2mm}
+  .arch-ring{margin-top:6mm;padding:1.6mm;border:.25mm solid var(--silver);border-radius:34mm 34mm 0 0}
+  .arch{width:62mm;height:86mm;border-radius:32mm 32mm 0 0;overflow:hidden;border:.6mm solid var(--silver);
+        background:radial-gradient(circle at 50% 30%,#1a7f60,#07382B)}
+  .arch img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+  .cover .happy{font-family:'Playfair Display',serif;font-style:italic;font-size:17pt;color:var(--champagne);margin-top:6mm}
+  .cover h1{font-family:'Playfair Display',serif;font-weight:700;font-size:29pt;margin:0;line-height:1.1}
+  .cover .name{font-weight:600;font-size:10.5pt;letter-spacing:.3em;color:var(--silver);margin-top:2.5mm}
+  .cover .full{font-size:6pt;letter-spacing:.2em;margin-top:1mm}
+  .cover .date{font-weight:600;font-size:7.5pt;letter-spacing:.3em;color:var(--champagne);margin-top:2.5mm}
+
+  /* ---------- message + dedication pages ---------- */
+  .feature h2{font-family:'Playfair Display',serif;font-weight:400;font-size:22pt;line-height:1.2;margin:2mm 0}
+  .feature .label{color:var(--champagne)}
+  .feature p{font-size:10pt;line-height:1.75;margin:3mm 0}
+  .feature .gold{color:var(--champagne);font-weight:600}
+  .feature .psalm{font-family:'Playfair Display',serif;font-style:italic;font-size:12pt;line-height:1.8;margin-top:5mm}
+
+  /* ---------- tribute pages ---------- */
+  .tribute-page{--fs:7.4pt}   /* <-- change this number per page to make text bigger/smaller */
+  .tribute-page .strip{position:absolute;top:0;left:0;right:0;height:9mm;background:var(--emerald);
+        border-bottom:.35mm solid var(--silver);color:var(--ivory);display:flex;align-items:center;justify-content:center}
+  .tribute-page .strip span{font-size:5.4pt;letter-spacing:.3em;text-transform:uppercase}
+  .tribute-page .foot{position:absolute;bottom:4mm;left:0;right:0}
+  .tribute-page .foot .divider{margin:0 auto;width:16mm}
+  .tributes{position:absolute;top:12mm;bottom:9mm;left:8mm;right:8mm;
+        column-count:2;column-gap:6mm;column-rule:.2mm solid var(--silver);column-fill:auto;
+        font-size:var(--fs);line-height:1.42}
+  .tribute{margin:0 0 3.5mm}
+  .tribute h3{font-family:'Playfair Display',serif;font-weight:700;color:var(--emerald);font-size:1.4em;
+        line-height:1.2;text-align:center;margin:0 0 1mm;break-after:avoid}
+  .tribute .sub{font-size:.8em;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:center;margin:0 0 1mm}
+  .tribute .divider{margin:1.6mm auto;width:22mm}
+  .tribute p{margin:0 0 1.3mm}
+  .tribute p.bold{font-weight:700;color:var(--emerald)}
+  .tribute h4{font-family:'Playfair Display',serif;color:var(--emerald);font-size:1.12em;margin:1.4mm 0 .8mm;break-after:avoid}
+  .tribute ul{margin:0 0 1.6mm;padding-left:4mm}
+  .tribute li{margin:0 0 .6mm}
+  .tribute .from{margin-top:1.5mm;text-align:center;break-inside:avoid}
+  .tribute .from b{display:block;font-family:'Playfair Display',serif;font-size:1.3em;color:var(--emerald)}
+  .tribute .from small{display:block;font-size:.8em;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+  /* ---------- back cover ---------- */
+  .back{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .circle-ring{padding:1.8mm;border:.25mm solid var(--silver);border-radius:50%}
+  .circle{width:44mm;height:44mm;border-radius:50%;overflow:hidden;border:.6mm solid var(--silver);background:#1a7f60}
+  .circle img{width:100%;height:100%;object-fit:cover;object-position:center 12%;display:block}
+  .back h2{font-family:'Playfair Display',serif;font-style:italic;font-weight:400;font-size:32pt;margin:9mm 0 0}
+  .back .love{color:var(--champagne);margin-top:1mm}
+  .back .wish{font-weight:600;font-size:8pt;letter-spacing:.25em;text-transform:uppercase;margin-top:1mm}
+  .back .tag{position:absolute;bottom:12mm;left:0;right:0;color:var(--silver)}
+</style>
+</head>
+<body>
+
+<div class="toolbar"><button onclick="window.print()">Download as PDF</button></div>
+<div id="warn">A page (outlined red) has too much text. Lower its --fs or move a tribute.</div>
+
+<main>
+
+<!-- ============================ COVER ============================ -->
+<section class="page dark cover">
+  <div class="top caps">Celebrating 66 years of God's faithfulness,<br>love and charity</div>
+  <div class="arch-ring"><div class="arch">
+    <!-- PUT HER PHOTO FILE NAME HERE -->
+    <img src="/images/Mummy Paradise 5.jpg" alt="Mummy Paradise" onerror="this.style.display='none'">
+  </div></div>
+  <div class="happy">Happy</div>
+  <h1>66th Birthday</h1>
+  <div class="name">MUMMY PARADISE</div>
+  <div class="divider"><i></i></div>
+  <div class="full caps">Amb. Dr. (Mrs) Chinyere Onuogu</div>
+  <div class="date">NOVEMBER 11</div>
+</section>
+
+<!-- ======================== HER OWN MESSAGE ======================== -->
+<section class="page dark feature">
+  <div class="center-col">
+    <div class="label caps">A message from Mummy Paradise</div>
+    <h2>Celebrating God's Faithfulness</h2>
+    <div class="divider"><i></i></div>
+    <p>My 66th birthday is all about <b>THANKING GOD</b>, as I navigate to the next phase of my Ministry of <b>CHARITY/BENEVOLENCE</b>, where I'll be focusing on <b>(ORPHANS, VULNERABLE YOUTHS AND THE ELDERLIES)</b>.</p>
+    <p class="gold">Just say what you know about me.</p>
+    <p>Happy Sunday. God bless you.</p>
+  </div>
+</section>
+
+<!-- ========================== DEDICATION ========================== -->
+<section class="page dark feature">
+  <div class="center-col">
+    <div class="label caps">Dedicated to</div>
+    <h2>AMB. DR. (MRS) CHINYERE ONUOGU</h2>
+    <div class="label caps">Mummy Paradise</div>
+    <div class="divider"><i></i></div>
+    <div class="psalm">The righteous shall flourish like the palm tree: he shall grow like a cedar in Lebanon. Those that be planted in the house of the LORD shall flourish in the courts of our God. They shall still bring forth fruit in old age; they shall be fat and flourishing;</div>
+    <div class="label caps" style="margin-top:4mm">Psalm 92:12-14</div>
+  </div>
+</section>
+
+
+<!-- ===================================================================
+     TRIBUTE PAGES
+     Each page holds 2 to 4 tributes in two columns (small font).
+     To add a tribute: copy one <article class="tribute"> ... </article> block
+     and paste it before the closing </div> of a ".tributes" box.
+     To start a NEW page: copy a whole <section class="page tribute-page"> ... </section>.
+     =================================================================== -->
+
+<!-- ------------------------- TRIBUTE PAGE 1 ------------------------- -->
+<section class="page tribute-page" style="--fs:6.5pt">
+  <div class="strip"><span>Mummy Paradise &nbsp;&middot;&nbsp; 66th Birthday Tributes</span></div>
+  <div class="tributes">
+
+    <!-- ===== TRIBUTE START ===== -->
+    <article class="tribute">
+      <h3>HAPPY 66TH BIRTHDAY TRIBUTE!</h3>
+      <div class="sub">To: Amb. Dr. Mrs. Chinyere Onuogu (Mummy Paradise)</div>
+      <div class="divider"><i></i></div>
+      <p class="bold">CELEBRATING 66 YEARS OF GOD'S FAITHFULNESS, LOVE, CHARITY AND SELFLESS SERVICE TO HUMANITY.</p>
+      <p>Today, we celebrate the goodness and faithfulness of Almighty God in the life of His beloved daughter, an exceptional woman of God, a mother, mentor, philanthropist and a shining example of Christian love and benevolence.</p>
+      <p>As you clock 66, Mummy, we celebrate not just another year of life but a remarkable journey of faith, compassion and unwavering commitment to God's ministry of charity, particularly towards orphans, vulnerable youths and the elderly.</p>
+      <h4>MY PERSONAL ENCOUNTERS WITH MUMMY PARADISE</h4>
+      <p>My first encounter with you remains unforgettable. My late cousin, Pastor Temple Uka Nwankwo, drove me to your home in Ajalli. Along the way, he spoke so highly of your kindness, generosity, charitable disposition, mentorship and deep religious commitment.</p>
+      <p>Upon our arrival at the Onuogu family compound, we received an extraordinary welcome, accompanied by generous Christmas gifts to take home. That experience gave me a first-hand understanding of the wonderful woman my cousin had always spoken about.</p>
+      <p>My second encounter was during the burial of my beloved cousin, Late Pastor Temple Uka Nwankwo. Mummy, you practically took 100% responsibility for the burial arrangements and activities, ensuring that everything was properly organised and that his final journey was conducted with dignity, love and Christian honour. Your prayers and comforting words after the burial brought consolation to us during that difficult period.</p>
+      <p>My third memorable encounter was 21 years ago, when my first son was just three months old. You blessed him and assured us of your willingness to support the education of all my children to whatever level they desired, out of your love and respect for my late cousin, Temple.</p>
+      <p>Mummy, your prayers, blessings, generosity and goodwill have continued to follow my children. Today, by God's grace, they are all studying in universities in the United States of America. This is a testimony I will never forget.</p>
+      <h4>YOU HAVE BECOME A MOTHER TO MY ENTIRE FAMILY.</h4>
+      <p>Since those encounters, you have remained a true mother to me and my family, and you will continue to be one forever. Your doors have always been open, your heart has remained generous, and whenever I have approached you for assistance, you have responded with remarkable kindness and promptness.</p>
+      <p>Mummy, some people preach the gospel with words, but you demonstrate it through practical love, sacrifice, generosity and service to humanity.</p>
+      <p>Your life reminds us that true greatness is not measured by wealth or titles but by the number of lives touched, encouraged, supported and transformed.</p>
+      <h4>MY BIRTHDAY PRAYERS FOR YOU</h4>
+      <p>As you celebrate your 66th birthday, may Almighty God:</p>
+      <ul>
+        <li>Renew your strength, health and youthful spirit.</li>
+        <li>Continue to enlarge your capacity to serve humanity.</li>
+        <li>Reward every seed of kindness you have sown.</li>
+        <li>Grant you many more fruitful years of joy, peace and prosperity.</li>
+        <li>Preserve your family and generations after you.</li>
+        <li>Give you greater grace to fulfil your divine assignment on earth.</li>
+      </ul>
+      <p>May your good works continue to speak for you on earth, and may your heavenly reward be everlasting.</p>
+      <p class="bold">HAPPY 66TH BIRTHDAY, MUMMY PARADISE!</p>
+      <p>God bless you abundantly, Mummy, both here on earth and in eternity.</p>
+      <p>May we all learn to emulate your uncommon love for humanity, your generosity and your unwavering commitment to God's work.</p>
+      <p>With deep love, gratitude and prayers,</p>
+      <div class="from"><div class="divider"><i></i></div><b>Hon. Gabriel Nwankwo</b></div>
+    </article>
+    <!-- ===== TRIBUTE END ===== -->
+
+
+  </div>
+  <div class="foot"><div class="divider"><i></i></div></div>
+</section>
+
+<!-- ------------------------- TRIBUTE PAGE 2 ------------------------- -->
+<section class="page tribute-page" style="--fs:6.8pt">
+  <div class="strip"><span>Mummy Paradise &nbsp;&middot;&nbsp; 66th Birthday Tributes</span></div>
+  <div class="tributes">
+
+    <!-- ===== TRIBUTE START ===== -->
+    <article class="tribute">
+      <h3>HAPPY 66TH BIRTHDAY, MUMMY CHINYERE ONUOGU!</h3>
+      <div class="sub">66 years of God's faithfulness, grace and divine impact</div>
+      <div class="divider"><i></i></div>
+      <p>Today, we celebrate a remarkable woman, a mother of virtue, a woman of grace, strength, wisdom and uncommon blessings. Mummy Chinyere Onuogu, your 66th birthday is not just a celebration of age but a glorious testimony of God's faithfulness, preservation and abundant goodness.</p>
+      <p>For 66 wonderful years, God has been your strength, your keeper and your unfailing source of help. Through the different seasons of life, His mercy has sustained you, His grace has carried you, and His faithfulness has remained constant.</p>
+      <p>You are a blessing to your generation, a source of encouragement to many, and a woman whose life reminds us that age is not merely a number but a testimony of God's goodness.</p>
+      <p>At 66, you are not growing weaker; you are growing stronger in grace, deeper in wisdom, richer in experience and greater in divine relevance. Your best days are not behind you; by the special grace of God, greater testimonies, greater celebrations and greater accomplishments are still ahead.</p>
+      <p>As you celebrate this beautiful milestone, my prayer is that the Almighty God will renew your strength like that of the eagle. May He bless you with sound health, long life, divine protection, overflowing joy and uncommon peace.</p>
+      <p>May your children, family and loved ones continue to surround you with happiness. May you eat the fruits of your labour, enjoy the rewards of your sacrifices and witness generations after generations flourishing under God's blessings.</p>
+      <p>May the remaining years of your life be more glorious than the years behind you. May your testimony never become history, and may your latter days be filled with greater honour, laughter and supernatural celebrations.</p>
+      <p>Happy 66th Birthday, Mummy Chinyere Onuogu!</p>
+      <p>You are celebrated, cherished, honoured and deeply appreciated.</p>
+      <p>Congratulations on 66 glorious years! Your life shall continue to shine brighter and brighter unto the perfect day, in Jesus' mighty name. Amen!</p>
+      <p>Scriptural Anchor: Psalm 92:12&ndash;14; Isaiah 46:4; Proverbs 16:31.</p>
+      <p>With love and prayers.</p>
+      <p>Happy 66th Birthday, Mummy Chinyere! May heaven continue to celebrate you, and may your testimony inspire many generations.</p>
+      <p>Yours In Him.</p>
+      <div class="from"><div class="divider"><i></i></div><b>Pst Maxwell Ifeanyi Anozie</b></div>
+    </article>
+    <!-- ===== TRIBUTE END ===== -->
+
+    <!-- ===== TRIBUTE START ===== -->
+    <article class="tribute">
+      <h3>HAPPY BIRTHDAY TO A REMARKABLE WOMAN!</h3>
+      <div class="divider"><i></i></div>
+      <p>Today, I celebrate not just another year of your life but a woman whose kindness, generosity, love, and support have made a great difference in my life.</p>
+      <p>You are more than a mother to us; you are a blessing, a source of encouragement, and a woman whose good deeds I will never take for granted.</p>
+      <p>Your willingness to support us, stand by us, and contribute to all the crusades we had in Ageli in Anambra State, is something I deeply appreciate.</p>
+      <p>Your generosity has touched our lives in ways you may never fully understand.</p>
+      <p>You have showed us that true greatness is not just about what we achieve but also about how much we give and how many lives we touch.</p>
+      <p>On this special day, I pray that Almighty God will continue to bless you abundantly, grant you good health, long life, peace, happiness, and unlimited favour. May He reward your kindness, enlarge your coast, and open greater doors of opportunities for you.</p>
+      <p>May your new age bring you countless reasons to smile, celebrate, and testify to God's goodness.</p>
+      <p>Happy Birthday to my wonderful mummy, a woman of substance, grace, and uncommon generosity.</p>
+      <p>May you continue to shine and flourish!</p>
+      <p>With love and deep appreciation.</p>
+      <div class="from"><div class="divider"><i></i></div><b>Deaconess Comfort Adelaja</b></div>
+    </article>
+    <!-- ===== TRIBUTE END ===== -->
+
+  </div>
+  <div class="foot"><div class="divider"><i></i></div></div>
+</section>
+
+
+<!-- ------------------------- TRIBUTE PAGE 3 ------------------------- -->
+<section class="page tribute-page" style="--fs:6.8pt">
+  <div class="strip"><span>Mummy Paradise &nbsp;&middot;&nbsp; 66th Birthday Tributes</span></div>
+  <div class="tributes">
+
+    <!-- ===== TRIBUTE START ===== -->
+    <article class="tribute">
+      <h3>TRIBUTE TO AMB. DR. (MRS) CHINYERE ONUOGU - MUMMY PARADISE</h3>
+      <div class="divider"><i></i></div>
+      <p>Happy 66th Birthday, Mummy Paradise!</p>
+      <p>I celebrate God's faithfulness in your life. You are a mother to many, a woman of uncommon grace, compassion and generosity.</p>
+      <p>Your life has been a ministry of love - always giving, always lifting, always blessing. As you step into this new phase of charity and benevolence for orphans, vulnerable youths and the elderly, I pray God will strengthen you, enlarge your capacity and reward your labour of love.</p>
+      <p>Thank you for being a light to your generation.</p>
+      <p>Congratulations and Happy Birthday Ma!</p>
+      <div class="from"><div class="divider"><i></i></div><b>Hon. Amb. Charles Tiuda</b><small>Taraba State NDC Chairman</small></div>
+    </article>
+    <!-- ===== TRIBUTE END ===== -->
+
+    <!-- ===== TRIBUTE START ===== -->
+    <article class="tribute">
+      <h3>HAPPY BIRTHDAY TO A REMARKABLE WOMAN!</h3>
+      <div class="divider"><i></i></div>
+      <p>Today, I celebrate not just another year of your life but a woman whose kindness, generosity, love, and support have made a great difference in my life.</p>
+      <p>You are more than a mother to us; you are a blessing, a source of encouragement, and a woman whose good deeds I will never take for granted.</p>
+      <p>Your willingness to support us, stand by us, and contribute to all the crusades we had in Ageli in Anambra State, is something I deeply appreciate.</p>
+      <p>Your generosity has touched our lives in ways you may never fully understand.</p>
+      <p>You have showed us that true greatness is not just about what we achieve but also about how much we give and how many lives we touch.</p>
+      <p>On this special day, I pray that Almighty God will continue to bless you abundantly, grant you good health, long life, peace, happiness, and unlimited favour. May He reward your kindness, enlarge your coast, and open greater doors of opportunities for you.</p>
+      <p>May your new age bring you countless reasons to smile, celebrate, and testify to God's goodness.</p>
+      <p>Happy Birthday to my wonderful mummy, a woman of substance, grace, and uncommon generosity.</p>
+      <p>May you continue to shine and flourish!</p>
+      <p>With love and deep appreciation.</p>
+      <div class="from"><div class="divider"><i></i></div><b>Deaconess Comfort Adelaja</b></div>
+    </article>
+    <!-- ===== TRIBUTE END ===== -->
+
+  </div>
+  <div class="foot"><div class="divider"><i></i></div></div>
+</section>
+
+<!-- ======================== BACK COVER ======================== -->
+<section class="page dark back">
+  <div class="circle-ring"><div class="circle">
+    <!-- PUT BACK-COVER PHOTO FILE NAME HERE -->
+    <img src="/images/m4.jpeg" alt="Mummy Paradise" onerror="this.style.display='none'">
+  </div></div>
+  <h2>Thank you</h2>
+  <div class="divider"><i></i></div>
+  <div class="love caps">With love from</div>
+  <div class="wish">Your well-wishers</div>
+  <div class="tag caps" style="text-align:center">Mummy Paradise &nbsp;&middot;&nbsp; 66</div>
+</section>
+
+</main>
+
+<script>
+  // On screen only: flag any tribute page whose text runs past the page
+  function check(){
+    let bad=false;
+    document.querySelectorAll('.tribute-page').forEach(p=>{
+      const t=p.querySelector('.tributes');
+      const over=t.scrollWidth>t.clientWidth+2||t.scrollHeight>t.clientHeight+2;
+      p.classList.toggle('overflowing',over); if(over) bad=true;
+    });
+    document.getElementById('warn').style.display=bad?'block':'none';
+  }
+  window.addEventListener('load',()=>{document.fonts&&document.fonts.ready.then(check);check();});
+  window.addEventListener('beforeprint',()=>document.getElementById('warn').style.display='none');
+</script>
+</body>
+</html>
